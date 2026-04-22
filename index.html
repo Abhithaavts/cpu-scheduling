@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CPU Scheduling Simulator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-shell">
+        <main class="simulator-page">
+            <section class="page-header">
+                <p class="eyebrow">CPU Scheduling Lab</p>
+                <h1>CPU Scheduling Simulator</h1>
+                <p class="subtitle">Enter processes, choose an algorithm, and view the result directly without the extra home screen.</p>
+            </section>
+
+            <section class="workspace">
+                <div class="panel input-panel">
+                    <div class="panel-head">
+                        <div>
+                            <h2>Simulation Setup</h2>
+                            <p>Configure the algorithm and process values below.</p>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="algorithm">Select Algorithm</label>
+                        <select id="algorithm">
+                            <option value="fcfs">First Come First Serve (FCFS)</option>
+                            <option value="rr">Round Robin (RR)</option>
+                            <option value="sjf-non">Shortest Job First (SJF)</option>
+                            <option value="sjf-pre">Shortest Remaining Time First (SRTF)</option>
+                            <option value="priority">Priority Scheduling</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" id="time-quantum-group" style="display: none;">
+                        <label for="time-quantum">Time Quantum</label>
+                        <input type="number" id="time-quantum" min="1" value="2">
+                    </div>
+
+                    <div class="table-card">
+                        <div class="table-title">
+                            <h3>Processes</h3>
+                            <p>Add or remove processes before calculating.</p>
+                        </div>
+
+                        <div class="table-scroll">
+                            <table class="process-table" id="process-table">
+                                <thead>
+                                    <tr>
+                                        <th>Process ID</th>
+                                        <th>Arrival Time</th>
+                                        <th>Burst Time</th>
+                                        <th>Priority</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="process-tbody">
+                                    <tr>
+                                        <td><input type="text" value="P1" class="process-id"></td>
+                                        <td><input type="number" value="0" min="0" class="arrival-time"></td>
+                                        <td><input type="number" value="2" min="1" class="burst-time"></td>
+                                        <td><input type="number" value="3" min="1" class="priority"></td>
+                                        <td><button class="remove-btn" onclick="removeProcess(this)">Remove</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="text" value="P2" class="process-id"></td>
+                                        <td><input type="number" value="0" min="0" class="arrival-time"></td>
+                                        <td><input type="number" value="5" min="1" class="burst-time"></td>
+                                        <td><input type="number" value="1" min="1" class="priority"></td>
+                                        <td><button class="remove-btn" onclick="removeProcess(this)">Remove</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="text" value="P3" class="process-id"></td>
+                                        <td><input type="number" value="1" min="0" class="arrival-time"></td>
+                                        <td><input type="number" value="1" min="1" class="burst-time"></td>
+                                        <td><input type="number" value="2" min="1" class="priority"></td>
+                                        <td><button class="remove-btn" onclick="removeProcess(this)">Remove</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="button-row">
+                        <button class="secondary-btn" onclick="addProcess()">Add Process</button>
+                        <button onclick="calculate()">Calculate</button>
+                    </div>
+                </div>
+
+                <div class="panel output-panel">
+                    <div class="output-section" id="output-section" style="display: none;">
+                        <div class="panel-head">
+                            <div>
+                                <h2>Results</h2>
+                                <p>Calculated values and execution order.</p>
+                            </div>
+                            <div class="selected-algorithm" id="selected-algorithm"></div>
+                        </div>
+
+                        <div class="gantt-chart">
+                            <h3>Gantt Chart</h3>
+                            <div class="chart-card">
+                                <div id="gantt-container"></div>
+                                <div class="time-axis" id="time-axis"></div>
+                            </div>
+                        </div>
+
+                        <div class="results-layout">
+                            <div class="table-card summary-card">
+                                <div class="table-title">
+                                    <h3>Process Summary</h3>
+                                    <p>A summary of your processes including waiting and turnaround times.</p>
+                                </div>
+
+                                <div class="table-scroll">
+                                    <table class="result-table" id="result-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Process ID</th>
+                                                <th>Arrival Time</th>
+                                                <th>Burst Time</th>
+                                                <th>Waiting Time</th>
+                                                <th>Turnaround Time</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="result-tbody"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="metrics-panel">
+                                <div class="metric-box">
+                                    <span>Avg Waiting Time</span>
+                                    <strong id="avg-wt-value">0</strong>
+                                </div>
+                                <div class="metric-box">
+                                    <span>Avg Turnaround Time</span>
+                                    <strong id="avg-tat-value">0</strong>
+                                </div>
+                            
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
